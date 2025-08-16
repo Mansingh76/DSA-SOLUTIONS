@@ -1,2 +1,2 @@
-# DSA-SOLUTIONS
+# DSA-SOLVED
 This repository contains all the solution of the problems that i solved......
