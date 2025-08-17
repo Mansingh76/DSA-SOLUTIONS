@@ -1,0 +1,21 @@
+class Solution {
+    int maxSum = Integer.MIN_VALUE;
+
+    public int maxPathSum(TreeNode root) {
+        maxGain(root);
+        return maxSum;
+    }
+
+    private int maxGain(TreeNode node) {
+        if (node == null) return 0;
+
+        int left = Math.max(maxGain(node.left), 0);
+        int right = Math.max(maxGain(node.right), 0);
+
+        // Max path through current node
+        maxSum = Math.max(maxSum, left + right + node.val);
+
+        // Return max gain if we continue path upward
+        return node.val + Math.max(left, right);
+    }
+}
