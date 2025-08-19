@@ -1,0 +1,18 @@
+1899. Merge Triplets to Form Target Triplet
+
+Explanation: Only use triplets ≤ target in all positions; take max of each index → check if equals target.
+
+
+class Solution {
+    public boolean mergeTriplets(int[][] triplets, int[] target) {
+        int[] maxTriplet = new int[3]; // track max for each index
+        for (int[] t : triplets) {
+            if (t[0] <= target[0] && t[1] <= target[1] && t[2] <= target[2]) {
+                for (int i = 0; i < 3; i++) {
+                    maxTriplet[i] = Math.max(maxTriplet[i], t[i]);
+                }
+            }
+        }
+        return Arrays.equals(maxTriplet, target);
+    }
+}
