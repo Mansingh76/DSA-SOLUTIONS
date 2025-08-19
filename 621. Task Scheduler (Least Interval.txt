@@ -1,0 +1,18 @@
+621. Task Scheduler (Least Interval)
+
+Explanation: Greedy placement of most frequent tasks with cooldown n.
+
+class Solution {
+    public int leastInterval(char[] tasks, int n) {
+        int[] count = new int[26];
+        for (char t : tasks) count[t - 'A']++;
+        Arrays.sort(count);
+        int fMax = count[25], idle = (fMax - 1) * n;
+
+        for (int i = 24; i >= 0 && idle > 0; i--) {
+            idle -= Math.min(count[i], fMax - 1);
+        }
+        idle = Math.max(0, idle);
+        return tasks.length + idle;
+    }
+}
