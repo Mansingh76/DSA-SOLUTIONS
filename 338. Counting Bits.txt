@@ -1,7 +1,6 @@
 338. Counting Bits
 
-Explanation:
-DP: number of 1s in i = number of 1s in i/2 + last bit of i.
+DP using previously computed values.
 
 class Solution {
     public int[] countBits(int n) {
