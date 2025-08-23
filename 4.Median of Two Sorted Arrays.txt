@@ -1,4 +1,4 @@
-5. Median of Two Sorted Arrays — 4
+ 4.Median of Two Sorted Arrays
 
 public double findMedianSortedArrays(int[] nums1, int[] nums2) {
     int m = nums1.length, n = nums2.length;
@@ -25,3 +25,4 @@ public double findMedianSortedArrays(int[] nums1, int[] nums2) {
     }
     return 0;
 }
+
