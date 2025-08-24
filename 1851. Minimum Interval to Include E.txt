@@ -1,0 +1,26 @@
+1851. Minimum Interval to Include Each Query
+
+Explanation:
+Sort queries & intervals → use min-heap of interval lengths covering the current query.
+
+class Solution {
+    public int[] minInterval(int[][] intervals, int[] queries) {
+        Arrays.sort(intervals, (a,b)->a[0]-b[0]);
+        Integer[] idx = new Integer[queries.length];
+        for (int i=0;i<queries.length;i++) idx[i]=i;
+        Arrays.sort(idx, (a,b)->queries[a]-queries[b]);
+        
+        int[] res = new int[queries.length];
+        Arrays.fill(res, -1);
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a,b)->(a[1]-a[0])-(b[1]-b[0]));
+        
+        int i=0;
+        for (int j: idx) {
+            int q = queries[j];
+            while (i<intervals.length && intervals[i][0]<=q) pq.offer(intervals[i++]);
+            while (!pq.isEmpty() && pq.peek()[1]<q) pq.poll();
+            if (!pq.isEmpty()) res[j] = pq.peek()[1]-pq.peek()[0]+1;
+        }
+        return res;
+    }
+}
