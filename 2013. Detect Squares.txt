@@ -1,0 +1,28 @@
+2013. Detect Squares
+
+class DetectSquares {
+    private Map<String, Integer> count;
+    private List<int[]> points;
+
+    public DetectSquares() {
+        count = new HashMap<>();
+        points = new ArrayList<>();
+    }
+
+    public void add(int[] point) {
+        String key = point[0] + "," + point[1];
+        count.put(key, count.getOrDefault(key, 0) + 1);
+        points.add(point);
+    }
+
+    public int count(int[] point) {
+        int res = 0;
+        int x = point[0], y = point[1];
+        for (int[] p : points) {
+            int x2 = p[0], y2 = p[1];
+            if (Math.abs(x - x2) == 0 || Math.abs(x - x2) != Math.abs(y - y2)) continue;
+            res += count.getOrDefault(x + "," + y2, 0) * count.getOrDefault(x2 + "," + y, 0);
+        }
+        return res;
+    }
+}
