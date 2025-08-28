@@ -1,0 +1,22 @@
+332. Reconstruct Itinerary
+
+class Solution {
+    Map<String, PriorityQueue<String>> graph = new HashMap<>();
+    LinkedList<String> res = new LinkedList<>();
+
+    public List<String> findItinerary(List<List<String>> tickets) {
+        for (List<String> t : tickets) {
+            graph.computeIfAbsent(t.get(0), k -> new PriorityQueue<>()).add(t.get(1));
+        }
+        dfs("JFK");
+        return res;
+    }
+
+    private void dfs(String airport) {
+        PriorityQueue<String> dests = graph.get(airport);
+        while (dests != null && !dests.isEmpty()) {
+            dfs(dests.poll());
+        }
+        res.addFirst(airport);
+    }
+}
