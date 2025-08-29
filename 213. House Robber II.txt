@@ -1,0 +1,22 @@
+213. House Robber II
+
+Explanation: Circular array → rob either first excluded or last excluded.
+
+
+class Solution {
+    public int rob(int[] nums) {
+        if (nums.length == 1) return nums[0];
+        return Math.max(robLinear(Arrays.copyOfRange(nums, 0, nums.length - 1)),
+                        robLinear(Arrays.copyOfRange(nums, 1, nums.length)));
+    }
+    
+    private int robLinear(int[] nums) {
+        int prev = 0, curr = 0;
+        for (int num : nums) {
+            int temp = curr;
+            curr = Math.max(curr, prev + num);
+            prev = temp;
+        }
+        return curr;
+    }
+}
