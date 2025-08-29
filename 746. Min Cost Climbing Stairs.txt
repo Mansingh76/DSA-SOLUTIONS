@@ -1,0 +1,13 @@
+746. Min Cost Climbing Stairs
+
+class Solution {
+    public int minCostClimbingStairs(int[] cost) {
+        int prev = 0, curr = 0;
+        for (int c : cost) {
+            int temp = curr;
+            curr = Math.min(curr, prev) + c;  
+            prev = temp;
+        }
+        return Math.min(curr, prev);  // Need to return min of both options
+    }
+}
