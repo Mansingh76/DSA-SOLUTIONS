@@ -1,0 +1,64 @@
+qn -implement trie (leetcode 208)
+
+
+public class Trie {
+
+    private final TrieNode root;
+    private boolean startWith;
+
+    private static class TrieNode {
+        public TrieNode[] children;
+        public boolean isWord;
+
+        public TrieNode() {
+            children = new TrieNode[26]; // 26 lowercase English letters
+            isWord = false;
+        }
+    }
+
+    public Trie() {
+        root = new TrieNode();
+    }
+
+    // Inserts a word into the trie.
+    public void insert(String word) {
+        insert(word, root, 0);
+    }
+
+    private void insert(String word, TrieNode node, int index) {
+        if (index == word.length()) {
+            node.isWord = true;
+            return;
+        }
+        int charIndex = word.charAt(index) - 'a';
+        if (node.children[charIndex] == null) {
+            node.children[charIndex] = new TrieNode();
+        }
+        insert(word, node.children[charIndex], index + 1);
+    }
+
+    // Returns if the word is in the trie.
+    public boolean search(String word) {
+        return search(word, root, 0);
+    }
+
+    private boolean search(String word, TrieNode node, int index) {
+        if (index == word.length()) {
+            startWith = true; // for startsWith method
+            return node.isWord;
+        }
+        int charIndex = word.charAt(index) - 'a';
+        if (node.children[charIndex] == null) {
+            startWith = false;
+            return false;
+        }
+        return search(word, node.children[charIndex], index + 1);
+    }
+
+    // Returns if there is any word in the trie that starts with the given prefix.
+    public boolean startsWith(String prefix) {
+        search(prefix);
+        return startWith;
+    }
+}
+
