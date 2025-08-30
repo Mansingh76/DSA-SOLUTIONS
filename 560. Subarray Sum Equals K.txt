@@ -1,0 +1,24 @@
+QN - Subarray Sum Equals K
+
+
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        Map<Integer, Integer> prefix = new HashMap<>();
+        prefix.put(0, 1); // base case: one way to have sum = 0
+
+        int count = 0, currSum = 0;
+
+        for (int num : nums) {
+            currSum += num;
+
+            // check if there exists a prefix with sum = currSum - k
+            if (prefix.containsKey(currSum - k)) {
+                count += prefix.get(currSum - k);
+            }
+
+            prefix.put(currSum, prefix.getOrDefault(currSum, 0) + 1);
+        }
+
+        return count;
+    }
+}
