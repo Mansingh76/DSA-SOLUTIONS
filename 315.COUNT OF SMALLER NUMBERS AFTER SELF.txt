@@ -1,0 +1,54 @@
+QN - COUNT OF SMALLER NUMBERS AFTER SELF
+
+
+
+class Solution {
+    public List<Integer> countSmaller(int[] nums) {
+        int n = nums.length;
+        List<Integer> result = new ArrayList<>();
+        if (n == 0) return result;
+
+        // Coordinate compression (map values to 1...k)
+        int[] sorted = nums.clone();
+        Arrays.sort(sorted);
+        Map<Integer, Integer> rank = new HashMap<>();
+        int id = 1;
+        for (int val : sorted) {
+            if (!rank.containsKey(val)) {
+                rank.put(val, id++);
+            }
+        }
+
+        // Fenwick Tree
+        int[] bit = new int[id + 1];
+
+        // Traverse from right to left
+        for (int i = n - 1; i >= 0; i--) {
+            int r = rank.get(nums[i]);
+            int smallerCount = query(bit, r - 1); // count of smaller elements
+            result.add(smallerCount);
+            update(bit, r, 1); // add current number
+        }
+
+        Collections.reverse(result);
+        return result;
+    }
+
+    // Update BIT
+    private void update(int[] bit, int index, int delta) {
+        while (index < bit.length) {
+            bit[index] += delta;
+            index += index & -index;
+        }
+    }
+
+    // Query prefix sum
+    private int query(int[] bit, int index) {
+        int sum = 0;
+        while (index > 0) {
+            sum += bit[index];
+            index -= index & -index;
+        }
+        return sum;
+    }
+}
