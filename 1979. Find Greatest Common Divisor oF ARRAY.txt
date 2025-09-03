@@ -1,0 +1,16 @@
+QN - Find Greatest Common Divisor of Array(LEETCODE 1979)
+
+
+class Solution {
+    public int findGCD(int[] nums) {
+         int mn = Integer.MAX_VALUE, mx = Integer.MIN_VALUE;
+        for (int x : nums) {
+            mn = Math.min(mn, x);
+            mx = Math.max(mx, x);
+        }
+        return gcd(mn, mx);
+    }
+    private int gcd(int a, int b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
+}
