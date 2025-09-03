@@ -1,0 +1,17 @@
+QN - Minimum Number of Arrows to Burst Balloons (LEETCODE 452)
+
+
+class Solution {
+    public int findMinArrowShots(int[][] points) {
+        if (points == null || points.length == 0) return 0;
+        Arrays.sort(points, (a, b) -> Integer.compare(a[1], b[1]));
+        int arrows = 1, curEnd = points[0][1];
+        for (int[] balloon : points) {
+            if (balloon[0] > curEnd) {
+                arrows++;
+                curEnd = balloon[1];
+            }
+        }
+        return arrows; 
+    }
+}
