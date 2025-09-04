@@ -1,0 +1,30 @@
+
+309. Best Time to Buy and Sell Stock with Cooldown
+
+
+class Solution {
+    public int maxProfit(int[] prices) {
+        if (prices == null || prices.length == 0) return 0;
+        
+        int n = prices.length;
+        
+        // Initialize states
+        int hold = -prices[0]; // if we buy on day 0
+        int sold = 0;          // we cannot sell on day 0
+        int rest = 0;          // resting at the start
+        
+        for (int i = 1; i < n; i++) {
+            int prevHold = hold;
+            int prevSold = sold;
+            int prevRest = rest;
+
+            // State transitions
+            hold = Math.max(prevHold, prevRest - prices[i]); // buy or keep holding
+            sold = prevHold + prices[i];                     // sell today
+            rest = Math.max(prevRest, prevSold);             // rest or cooldown
+        }
+        
+        // Max profit is either in sold or rest state
+        return Math.max(sold, rest);
+    }
+}
