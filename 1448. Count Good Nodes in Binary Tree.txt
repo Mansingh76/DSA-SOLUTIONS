@@ -1,0 +1,26 @@
+
+1448. Count Good Nodes in Binary Tree
+
+
+class Solution {
+    public int goodNodes(TreeNode root) {
+          // Start DFS from root, with initial "max so far" as root's value
+        return dfs(root, root.val);
+    }
+    
+    private int dfs(TreeNode node, int maxSoFar) {
+        if (node == null) return 0; // base case: empty subtree
+
+        // A node is good if its value >= max value seen so far in the path
+        int good = (node.val >= maxSoFar) ? 1 : 0;
+
+        // Update max so far for the next recursive calls
+        int newMax = Math.max(maxSoFar, node.val);
+
+        // Explore left and right subtrees
+        good += dfs(node.left, newMax);
+        good += dfs(node.right, newMax);
+
+        return good;
+    }
+}
