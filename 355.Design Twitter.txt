@@ -1,0 +1,69 @@
+355.Design Twitter
+
+
+
+
+class Twitter {
+
+    private static int timestamp = 0; // global timestamp
+    private Map<Integer, Set<Integer>> followees; // user -> followees
+    private Map<Integer, LinkedList<Tweet>> tweets; // user -> list of tweets
+
+    private static class Tweet {
+        int time;
+        int id;
+        Tweet(int time, int id) {
+            this.time = time;
+            this.id = id;
+        }
+    }
+
+    public Twitter() {
+        followees = new HashMap<>();
+        tweets = new HashMap<>();
+    }
+    
+    public void postTweet(int userId, int tweetId) {
+        timestamp++;
+        tweets.putIfAbsent(userId, new LinkedList<>());
+        tweets.get(userId).addFirst(new Tweet(timestamp, tweetId));
+        if (tweets.get(userId).size() > 10) {
+            tweets.get(userId).removeLast(); // keep only 10 recent tweets
+        }
+    }
+    
+    public List<Integer> getNewsFeed(int userId) {
+        PriorityQueue<Tweet> minHeap = new PriorityQueue<>((a, b) -> a.time - b.time);
+        Set<Integer> users = followees.getOrDefault(userId, new HashSet<>());
+        users.add(userId); // include self
+
+        for (int u : users) {
+            LinkedList<Tweet> userTweets = tweets.getOrDefault(u, new LinkedList<>());
+            for (Tweet t : userTweets) {
+                minHeap.offer(t);
+                if (minHeap.size() > 10) {
+                    minHeap.poll(); // remove oldest tweet
+                }
+            }
+        }
+
+        List<Integer> res = new ArrayList<>();
+        while (!minHeap.isEmpty()) {
+            res.add(minHeap.poll().id);
+        }
+        Collections.reverse(res); // most recent first
+        return res;
+    }
+    
+    public void follow(int followerId, int followeeId) {
+        if (followerId == followeeId) return; // can't follow self
+        followees.putIfAbsent(followerId, new HashSet<>());
+        followees.get(followerId).add(followeeId);
+    }
+    
+    public void unfollow(int followerId, int followeeId) {
+        if (followees.containsKey(followerId)) {
+            followees.get(followerId).remove(followeeId);
+        }
+    }
+}
